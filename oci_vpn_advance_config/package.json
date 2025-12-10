@@ -1,0 +1,15 @@
+{
+  "name": "oci_vpn_advance_config",
+  "version": "1.0.0",
+  "description": "",
+  "main": "script.js",
+  "scripts": {
+    "script": "node script.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "oci-common": "2.68.0",
+    "oci-core": "2.68.0"
+  }
+}
