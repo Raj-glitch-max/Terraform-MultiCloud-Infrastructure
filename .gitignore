@@ -50,3 +50,7 @@ terraform.rc
 serverkey
 terraform.txt
 **/Oracle_Inventory/
+# Terraform files
+*.tfstate
+*.tfstate.backup
+.terraform/
