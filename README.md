@@ -59,3 +59,4 @@ https://docs.google.com/presentation/d/1peuU2K6cA1b9EeZd8g-iz_ve9KucFXQJLtqBe5yV
 # TODO: Fix OCI compartment configuration
 # Project Status
 Currently working on multi-cloud deployment automation
+# Security Notes
