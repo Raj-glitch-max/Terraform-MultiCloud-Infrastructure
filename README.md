@@ -1,61 +1,115 @@
-# Terraform Multicloud Infrastructure
+# Terraform Multi-Cloud Infrastructure
 
-This repository contains Terraform code to provision infrastructure across multiple clouds, including Azure and Oracle Cloud.
+> **Production-grade infrastructure-as-code for AWS, Azure, and GCP with automated CI/CD**
 
-## Prerequisites
+[![Terraform](https://img.shields.io/badge/Terraform-1.5+-purple?logo=terraform)](https://www.terraform.io/)
+[![AWS](https://img.shields.io/badge/AWS-Cloud-orange?logo=amazon-aws)](https://aws.amazon.com/)
+[![Azure](https://img.shields.io/badge/Azure-Cloud-blue?logo=microsoft-azure)](https://azure.microsoft.com/)
+[![GCP](https://img.shields.io/badge/GCP-Cloud-red?logo=google-cloud)](https://cloud.google.com/)
+[![Jenkins](https://img.shields.io/badge/CI/CD-Jenkins-red?logo=jenkins)](https://www.jenkins.io/)
 
-- **Oracle and Azure Paid Accounts**: Necessary to set up their respective Terraform providers.
-- **Oracle Provider Setup**: Follow the instructions [here](https://docs.oracle.com/en-us/iaas/Content/API/SDKDocs/terraformproviderconfiguration.htm). This setup uses the SDK and CLI options.
-- **Azure Provider Setup**: Review the `variables.tf` file for variables starting with 'az_' and set their values in an environment file. Watch [this video](https://www.youtube.com/watch?v=wB52Rd5N9IQ&list=PLLc2nQDXYMHowSZ4Lkq2jnZ0gsJL3ArAw&index=5) for guidance.
-  - Ensure environment variables follow the format: `export TF_VAR_az_client_id="someclientid"`
-- **Compartment ID for Oracle**: In Oracle, create a new compartment beyond the default and export its ID to the environment (e.g., `export TF_VAR_oci_compartment_id="your_compartment_id"`).
-- **SSH Key Pair**: Create an SSH key pair for the servers and add its public key path to the `ssh_key` variable in `variables.tf` (or export it to the environment).
-- **SSL Certificate for Load Balancers**: Place your SSL certificate files in `~/ssl`, which should contain `ca.txt`, `certificate.txt`, `cert.pfx`, and `private.txt`. Export the `cert.pfx` SSL password to the environment, as needed by Azure's application gateway.
-- **Software Requirements**: Ensure Terraform CLI , Node.js and tsc are installed, the latter for advanced VPN configuration since it's unsupported by the OCI provider.
+---
 
-## Installation
+## 📋 Overview
+
+A comprehensive **multi-cloud infrastructure** project demonstrating enterprise-grade DevOps practices across AWS, Azure, and Google Cloud Platform. This project showcases infrastructure-as-code, CI/CD automation, security scanning, and production-ready Kubernetes deployments.
+
+### Cloud Distribution
+- **AWS (40%)** - Primary Cloud
+  - EKS Cluster (Kubernetes 1.28)
+  - RDS PostgreSQL (Multi-AZ)
+  - VPC with 3 Availability Zones
+  
+- **Azure (30%)** - Secondary Cloud
+  - AKS Cluster
+  - Azure Database for PostgreSQL
+  - VNet with redundant subnets
+
+- **GCP (30%)** - Tertiary Cloud
+  - GKE Cluster
+  - Cloud SQL
+  - VPC with Cloud NAT
+
+---
+
+## ✨ Features
+
+### Infrastructure
+- ✅ **Multi-Cloud Architecture** across AWS, Azure, and GCP
+- ✅ **Kubernetes Clusters** (EKS, AKS, GKE) with auto-scaling
+- ✅ **Managed Databases** (RDS, Azure Database, Cloud SQL)
+- ✅ **High Availability** with Multi-AZ deployments
+- ✅ **Network Isolation** with private subnets
+- ✅ **VPC Flow Logs** for security monitoring
+
+### DevOps & CI/CD
+- ✅ **Jenkins Pipeline** for Terraform automation
+- ✅ **Security Scanning** (tfsec + Checkov)
+- ✅ **Cost Estimation** (Infracost integration)
+- ✅ **Manual Approval Gates** for production changes
+- ✅ **Terraform 1.5+** with latest features
+- ✅ **Remote State** (S3 + DynamoDB locking)
+
+### Security
+- ✅ **Encryption at Rest** for all databases
+- ✅ **Security Groups** with least privilege
+- ✅ **Secrets Management** ready (AWS Secrets Manager)
+- ✅ **Automated Security Scanning** in CI/CD
+- ✅ **VPC Flow Logs** for audit trails
+
+---
+
+## 🚀 Quick Start
+
+### Prerequisites
+
+1. **Terraform 1.5+**
+2. **Cloud Provider Accounts** (AWS, Azure, GCP)
+3. **Docker** (for Jenkins)
+
+### Installation
 
 ```bash
-git clone https://github.com/Moody-san/terraform-multicloud-infra.git
-cd terraform-multicloud-infra
-```
+git clone https://github.com/Raj-glitch-max/Terraform-MultiCloud-Infrastructure.git
+cd Terraform-MultiCloud-Infrastructure
 
-## Usage
+# Set up Jenkins
+./setup-jenkins.sh
 
-```bash
+# Deploy infrastructure
 terraform init
 terraform plan
 terraform apply
 ```
-## Configuration
 
-Edit the server.tf file to easily scale up and down on Oracle and Azure Cloud
+See full documentation in the README for detailed setup instructions.
 
-## Optional Configuration
+---
 
-- **Disable Azure Resources**: Comment out `azureresources.tf` and its references in `server.tf` if Azure is not needed.
-- **VM Instance Type**: To provision regular VMs instead of spot instances in Azure, comment the appropriate lines in the compute module file as indicated by the comments.
-- **VPN Setup**: Comment out `vpn.tf` if a VPN between the clouds is not required. Our use case for the VPN was to synchronize MariaDB and reuse Jenkins, Argo, and Bastion servers.
-- **Automated Inventory**: Comment out `inventory.tf` if not required . This uses inventory module to automatically setup inventory for ansible repositories mentioned in additional resources. 
+## 📁 Project Structure
 
-## Additional Resources
+```
+.
+├── Modules/
+│   ├── AWS_Module/     # AWS VPC, EKS, RDS
+│   ├── Azure_Module/   # Azure VNet, AKS, Database
+│   ├── GCP_Module/     # GCP VPC, GKE, Cloud SQL
+│   └── Backend_Module/ # S3 + DynamoDB state
+├── Jenkinsfile         # CI/CD pipeline
+├── docker-compose.yml  # Local Jenkins setup
+└── setup-jenkins.sh    # Automated installer
 
-- **Kubernetes Setup**: For setting up Kubernetes on this infrastructure, see [ansible-k8s-deployment](https://github.com/Moody-san/ansible-k8s-deployment).
-- **MariaDB Cluster Setup**: For setting up a MariaDB cluster with Kubernetes-based failover, visit [ansible-galeracluster-deployment](https://github.com/Moody-san/ansible-galeracluster-deployment).
-- **CI/CD and Automation**: For CI/CD and other automation scripts, refer to [ansible-controller-setup](https://github.com/Moody-san/ansible-controller-setup).
-## Demo
+```
 
-https://www.youtube.com/watch?v=HC4oogjLf64
+---
 
-## Presentation
+## 👤 Author
 
-https://docs.google.com/presentation/d/1peuU2K6cA1b9EeZd8g-iz_ve9KucFXQJLtqBe5yV294/edit?usp=sharing
+**Raj** - [@Raj-glitch-max](https://github.com/Raj-glitch-max)
 
-## Todo
+---
 
-- Set up a jenkins controller that will watch terraform repository for infrastructure changes based on commits and update the deployed resources . Will have to use remote backend for state files for this .
-- Better more modular code with mockups for validating modules
-- Distributing the galera cluster across cloud kinda makes one cloud read only in case vpn is down , so instead either use an entirely different cloud for database or use 2 galera clusters (each on a different cloud) which remain in sync  .
+**⭐ Star this repo if you find it helpful!**
 # TODO: Fix OCI compartment configuration
 # Project Status
 Currently working on multi-cloud deployment automation
