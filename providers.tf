@@ -1,45 +1,70 @@
 terraform {
-  required_version = ">= 0.15"
+  required_version = ">= 1.5.0"
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = ">= 4.0"
-    }
-    oci = {
-      source  = "oracle/oci"
-      version = "5.19.0"
+      version = "~> 5.0"
     }
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = ">=3.0.0"
+      version = "~> 3.80"
+    }
+    google = {
+      source  = "hashicorp/google"
+      version = "~> 5.0"
     }
   }
-  # backend "s3" {
-  #   bucket         = "hybridinfrastatebucket"
-  #   dynamodb_table = "hybridinfrastatelockdb"
-  #   key            = "remote_backend/terraform.tfstate"
-  #   region         = "us-east-1"
-  #   encrypt        = true
-  # }
 }
 
-
+# AWS Provider - Primary Cloud (us-east-1)
 provider "aws" {
   region = "us-east-1"
-  alias  = "us"
+  alias  = "primary"
+
+  default_tags {
+    tags = {
+      Project     = "MultiCloud-Infrastructure"
+      ManagedBy   = "Terraform"
+      Environment = "production"
+    }
+  }
 }
 
+# AWS Provider - Secondary Region (us-west-2) for DR
+provider "aws" {
+  region = "us-west-2"
+  alias  = "secondary"
 
-provider "oci" {
-  region = "us-phoenix-1"
-  alias  = "oci_us"
+  default_tags {
+    tags = {
+      Project     = "MultiCloud-Infrastructure"
+      ManagedBy   = "Terraform"
+      Environment = "production"
+    }
+  }
 }
 
-provider "azurerm" { // using paid version of azurerm provider currently change to student subscription
-  features {}
+# Azure Provider - Secondary Cloud
+provider "azurerm" {
+  features {
+    resource_group {
+      prevent_deletion_if_contains_resources = false
+    }
+    key_vault {
+      purge_soft_delete_on_destroy = true
+    }
+  }
+  
   subscription_id = var.az_subscription_id
   client_id       = var.az_client_id
   client_secret   = var.az_client_secret
   tenant_id       = var.az_tenant_id
-  alias           = "azure_st"
+  alias           = "azure_primary"
+}
+
+# GCP Provider - Tertiary Cloud
+provider "google" {
+  project = var.gcp_project_id
+  region  = "us-central1"
+  alias   = "gcp_primary"
 }
