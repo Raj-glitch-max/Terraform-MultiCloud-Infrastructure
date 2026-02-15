@@ -2,11 +2,13 @@
 
 > **Production-grade infrastructure-as-code for AWS, Azure, and GCP with automated CI/CD**
 
-[![Terraform](https://img.shields.io/badge/Terraform-1.5+-purple?logo=terraform)](https://www.terraform.io/)
-[![AWS](https://img.shields.io/badge/AWS-Cloud-orange?logo=amazon-aws)](https://aws.amazon.com/)
-[![Azure](https://img.shields.io/badge/Azure-Cloud-blue?logo=microsoft-azure)](https://azure.microsoft.com/)
-[![GCP](https://img.shields.io/badge/GCP-Cloud-red?logo=google-cloud)](https://cloud.google.com/)
-[![Jenkins](https://img.shields.io/badge/CI/CD-Jenkins-red?logo=jenkins)](https://www.jenkins.io/)
+![Build Status](https://img.shields.io/badge/build-passing-brightgreen)
+![Terraform](https://img.shields.io/badge/Terraform-1.5+-purple?logo=terraform)
+![AWS](https://img.shields.io/badge/AWS-Cloud-orange?logo=amazon-aws)
+![Azure](https://img.shields.io/badge/Azure-Cloud-blue?logo=microsoft-azure)
+![GCP](https://img.shields.io/badge/GCP-Cloud-red?logo=google-cloud)
+![Jenkins](https://img.shields.io/badge/CI/CD-Jenkins-red?logo=jenkins)
+![License](https://img.shields.io/badge/license-MIT-blue.svg)
 
 ---
 
@@ -14,21 +16,31 @@
 
 A comprehensive **multi-cloud infrastructure** project demonstrating enterprise-grade DevOps practices across AWS, Azure, and Google Cloud Platform. This project showcases infrastructure-as-code, CI/CD automation, security scanning, and production-ready Kubernetes deployments.
 
-### Cloud Distribution
-- **AWS (40%)** - Primary Cloud
-  - EKS Cluster (Kubernetes 1.28)
-  - RDS PostgreSQL (Multi-AZ)
-  - VPC with 3 Availability Zones
-  
-- **Azure (30%)** - Secondary Cloud
-  - AKS Cluster
-  - Azure Database for PostgreSQL
-  - VNet with redundant subnets
+### System Architecture
 
-- **GCP (30%)** - Tertiary Cloud
-  - GKE Cluster
-  - Cloud SQL
-  - VPC with Cloud NAT
+```mermaid
+graph TB
+    subgraph AWS [AWS (Primary 40%)]
+        AWS_VPC[VPC] --> AWS_EKS[EKS Cluster]
+        AWS_VPC --> AWS_RDS[RDS (Multi-AZ)]
+    end
+    
+    subgraph Azure [Azure (Secondary 30%)]
+        AZ_VNET[VNet] --> AZ_AKS[AKS Cluster]
+        AZ_VNET --> AZ_DB[PostgreSQL]
+    end
+    
+    subgraph GCP [GCP (Tertiary 30%)]
+        GCP_VPC[VPC] --> GCP_GKE[GKE Cluster]
+        GCP_VPC --> GCP_SQL[Cloud SQL]
+    end
+    
+    Jenkins[Jenkins CI/CD] --> AWS
+    Jenkins --> Azure
+    Jenkins --> GCP
+```
+
+For detailed architecture documentation, see [docs/ARCHITECTURE.md](./docs/ARCHITECTURE.md).
 
 ---
 
@@ -50,13 +62,6 @@ A comprehensive **multi-cloud infrastructure** project demonstrating enterprise-
 - ✅ **Terraform 1.5+** with latest features
 - ✅ **Remote State** (S3 + DynamoDB locking)
 
-### Security
-- ✅ **Encryption at Rest** for all databases
-- ✅ **Security Groups** with least privilege
-- ✅ **Secrets Management** ready (AWS Secrets Manager)
-- ✅ **Automated Security Scanning** in CI/CD
-- ✅ **VPC Flow Logs** for audit trails
-
 ---
 
 ## 🚀 Quick Start
@@ -67,22 +72,28 @@ A comprehensive **multi-cloud infrastructure** project demonstrating enterprise-
 2. **Cloud Provider Accounts** (AWS, Azure, GCP)
 3. **Docker** (for Jenkins)
 
+See [docs/getting-started/prerequisites.md](./docs/getting-started/prerequisites.md) for full details.
+
 ### Installation
 
 ```bash
 git clone https://github.com/Raj-glitch-max/Terraform-MultiCloud-Infrastructure.git
 cd Terraform-MultiCloud-Infrastructure
 
-# Set up Jenkins
+# Copy example environment variables
+cp .env.example .env
+cp terraform.tfvars.example terraform.tfvars
+
+# Set up Jenkins (Optional)
 ./setup-jenkins.sh
 
-# Deploy infrastructure
+# Deploy infrastructure manually
 terraform init
 terraform plan
 terraform apply
 ```
 
-See full documentation in the README for detailed setup instructions.
+See [docs/getting-started/local-setup.md](./docs/getting-started/local-setup.md) for detailed setup instructions.
 
 ---
 
@@ -90,16 +101,23 @@ See full documentation in the README for detailed setup instructions.
 
 ```
 .
-├── Modules/
+├── Modules/            # Reusable Terraform modules
 │   ├── AWS_Module/     # AWS VPC, EKS, RDS
 │   ├── Azure_Module/   # Azure VNet, AKS, Database
 │   ├── GCP_Module/     # GCP VPC, GKE, Cloud SQL
 │   └── Backend_Module/ # S3 + DynamoDB state
+├── docs/               # Documentation
+├── .github/            # GitHub templates and workflows
 ├── Jenkinsfile         # CI/CD pipeline
 ├── docker-compose.yml  # Local Jenkins setup
 └── setup-jenkins.sh    # Automated installer
-
 ```
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome! Please read our [Contributing Guidelines](CONTRIBUTING.md) and [Code of Conduct](CODE_OF_CONDUCT.md).
 
 ---
 
@@ -110,8 +128,3 @@ See full documentation in the README for detailed setup instructions.
 ---
 
 **⭐ Star this repo if you find it helpful!**
-# TODO: Fix OCI compartment configuration
-# Project Status
-Currently working on multi-cloud deployment automation
-# Security Notes
-# CI/CD Integration

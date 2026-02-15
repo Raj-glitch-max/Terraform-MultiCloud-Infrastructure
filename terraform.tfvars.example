@@ -1,0 +1,22 @@
+# AWS
+aws_region = "us-east-1"
+
+# Azure
+az_subscription_id = "your-subscription-id"
+az_client_id       = "your-client-id"
+az_client_secret   = "your-client-secret"
+az_tenant_id       = "your-tenant-id"
+
+# GCP
+gcp_project_id      = "your-project-id"
+gcp_credentials_file = "~/.config/gcloud/application_default_credentials.json"
+
+# Common
+project_name = "multicloud-demo"
+environment  = "dev"
+ssh_key      = "ssh-rsa AAAAB3N..."
+
+# Secrets
+# Note: For production, use environment variables (TF_VAR_*) or a secrets manager
+db_master_password = "ChangeMe!"
+ssl_password       = "ChangeMe!"
