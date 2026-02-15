@@ -9,7 +9,7 @@ terraform {
     region         = "us-east-1"
     encrypt        = true
     dynamodb_table = "terraform-multicloud-state-lock"
-    
+
     # Enable versioning for state file recovery
     # versioning = true
   }
@@ -21,7 +21,7 @@ module "backend" {
   providers = {
     aws = aws.primary
   }
-  
+
   project_name = "multicloud-infra"
 }
 #   bucket_name   = "hybridinfrastatebucket"

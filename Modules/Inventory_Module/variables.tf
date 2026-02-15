@@ -37,7 +37,7 @@ variable "controllertemplatepath" {
 locals {
   allservers = {
     ociservers      = [for server in var.oracleservers : server.server_details],
-    ocibastionpubip =  [for server in var.oracleservers : server.server_details.public_ip if server.server_details.is_oracle_bastion == true] == [] ? ["127.0.0.1"] : [for server in var.oracleservers : server.server_details.public_ip if server.server_details.is_oracle_bastion == true],
+    ocibastionpubip = [for server in var.oracleservers : server.server_details.public_ip if server.server_details.is_oracle_bastion == true] == [] ? ["127.0.0.1"] : [for server in var.oracleservers : server.server_details.public_ip if server.server_details.is_oracle_bastion == true],
     azservers       = [for server in var.azureservers : server.server_details]
     oracleips       = [for server in var.oracleservers : server.server_details.private_ip if server.server_details.is_oracle_bastion == false]
     azureips        = [for server in var.azureservers : server.server_details.private_ip]

@@ -10,7 +10,7 @@ resource "azurerm_public_ip" "publiclbip" {
   resource_group_name = var.rgname
   location            = var.location
   allocation_method   = "Static"
-  sku                = "Standard"
+  sku                 = "Standard"
 }
 
 
@@ -20,9 +20,9 @@ resource "azurerm_application_gateway" "publiclbgw" {
   location            = var.location
 
   sku {
-    name           = "Standard_v2"
-    tier           = "Standard_v2"
-    capacity       = 1
+    name     = "Standard_v2"
+    tier     = "Standard_v2"
+    capacity = 1
   }
 
   ssl_certificate {
@@ -48,7 +48,7 @@ resource "azurerm_application_gateway" "publiclbgw" {
   }
 
   backend_address_pool {
-    name = local.backend_address_pool_name
+    name         = local.backend_address_pool_name
     ip_addresses = local.instances
   }
 
@@ -65,12 +65,12 @@ resource "azurerm_application_gateway" "publiclbgw" {
     frontend_ip_configuration_name = local.frontend_ip_configuration_name
     frontend_port_name             = local.frontend_port_name
     protocol                       = "Https"
-    ssl_certificate_name = "certificate"
+    ssl_certificate_name           = "certificate"
   }
 
   request_routing_rule {
     name                       = local.request_routing_rule_name
-    priority = 9
+    priority                   = 9
     rule_type                  = "Basic"
     http_listener_name         = local.listener_name
     backend_address_pool_name  = local.backend_address_pool_name

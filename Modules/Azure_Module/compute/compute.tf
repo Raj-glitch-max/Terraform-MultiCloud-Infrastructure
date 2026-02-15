@@ -31,8 +31,8 @@ resource "azurerm_linux_virtual_machine" "main" {
   resource_group_name   = var.rgname
   size                  = var.vm_size
   eviction_policy       = var.eviction_policy
-  priority              = var.priority   // comment this to provision regular VM
-  max_bid_price         = var.max_bid_price  // comment this to provision regular VM
+  priority              = var.priority      // comment this to provision regular VM
+  max_bid_price         = var.max_bid_price // comment this to provision regular VM
   network_interface_ids = [azurerm_network_interface.azurenic.id]
   user_data             = base64encode(data.template_file.cloud-config.rendered)
 

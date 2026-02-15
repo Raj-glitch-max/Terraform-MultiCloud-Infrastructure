@@ -49,7 +49,7 @@ module "azurepubliclb" {
   }
   location     = module.azurenetwork.location
   rgname       = module.azurenetwork.name
-  vcnname =  module.azurenetwork.vcnname
+  vcnname      = module.azurenetwork.vcnname
   ssl_password = var.ssl_password
   azureservers = module.azureservers
   depends_on   = [module.azureservers]

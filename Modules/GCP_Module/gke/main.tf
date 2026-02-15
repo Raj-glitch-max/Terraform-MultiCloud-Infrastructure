@@ -1,7 +1,7 @@
 # GCP GKE Cluster Module - Simplified
 
 resource "google_container_cluster" "main" {
-  name     = "${var.cluster_name}"
+  name     = var.cluster_name
   location = var.region
   project  = var.project_id
 

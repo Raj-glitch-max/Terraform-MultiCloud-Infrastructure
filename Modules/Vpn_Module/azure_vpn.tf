@@ -11,7 +11,7 @@ resource "azurerm_public_ip" "azurevpngwpubip" {
   location            = var.azurelocation
   resource_group_name = var.azurergname
   allocation_method   = "Static"
-  sku = "Standard"
+  sku                 = "Standard"
 }
 
 data "azurerm_public_ip" "gwip" {

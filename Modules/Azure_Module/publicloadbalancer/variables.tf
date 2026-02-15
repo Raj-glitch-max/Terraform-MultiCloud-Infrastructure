@@ -27,7 +27,7 @@ variable "azureservers" {
 }
 
 variable "ssl_password" {
-  
+
 }
 
 
