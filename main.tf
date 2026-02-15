@@ -38,7 +38,7 @@ module "aws_eks" {
 
   cluster_name       = "${var.project_name}-eks"
   kubernetes_version = "1.28"
-  
+
   public_subnet_ids  = module.aws_vpc.public_subnet_ids
   private_subnet_ids = module.aws_vpc.private_subnet_ids
 
@@ -67,12 +67,12 @@ module "aws_rds" {
   vpc_cidr           = module.aws_vpc.vpc_cidr
   private_subnet_ids = module.aws_vpc.private_subnet_ids
 
-  instance_class      = "db.t3.micro"
-  allocated_storage   = 20
-  multi_az            = true
+  instance_class    = "db.t3.micro"
+  allocated_storage = 20
+  multi_az          = true
 
-  master_username     = "dbadmin"
-  master_password     = "ChangeMeInProduction123!" # TODO: Move to AWS Secrets Manager
+  master_username = "dbadmin"
+  master_password = var.db_master_password # TODO: Move to AWS Secrets Manager for production
 
   tags = {
     Project     = var.project_name
